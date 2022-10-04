@@ -1,31 +1,9 @@
 resource "aws_iam_role" "lambda" {
-  name               = "${var.function_name}-role"
-  assume_role_policy = <<EOF
-    {
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Action": "sts:AssumeRole",
-            "Principal": {
-                "Service": "lambda.amazonaws.com"
-            },
-            "Effect": "Allow"
-        }
-    ]
-    }
- EOF
-}
-
-data "aws_iam_policy_document" "lambda" {
-  statement {
-    actions = [
-      "logs:CreateLogGroup",
-      "logs:CreateLogStream",
-      "logs:PutLogEvents"
-    ]
-    effect    = "Allow"
-    resources = ["*"]
-    sid       = "CreateCloudWatchLogs"
+  name                = "${var.function_name}-role"
+  assume_role_policy  = data.aws_iam_policy_document.assume_policy.json
+  inline_policy {
+    name   = "policy-cloudwatch"
+    policy = data.aws_iam_policy_document.cloudwatch.json
   }
 }
 

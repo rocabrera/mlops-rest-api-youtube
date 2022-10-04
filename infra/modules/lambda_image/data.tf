@@ -1,5 +1,5 @@
 data "archive_file" "src" {
   type        = "zip"
-  source_dir = "/home/rocabrera/Desktop/mlops-learning/projects/ml_rest_api/app/src/"
-  output_path = "modules/lambda_image/src_code.zip"
+  source_dir = "/home/rocabrera/Desktop/mlops-rest-api-youtube/app/src/"
+  output_path = "/home/rocabrera/Desktop/mlops-rest-api-youtube/app/artifacts/src_code.zip"
 }
