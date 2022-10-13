@@ -5,6 +5,10 @@ resource "aws_iam_role" "lambda" {
     name   = "policy-cloudwatch"
     policy = data.aws_iam_policy_document.cloudwatch.json
   }
+  inline_policy {
+    name   = "policy-s3"
+    policy = data.aws_iam_policy_document.s3.json
+  }
 }
 
 resource "aws_lambda_permission" "api_gw" {

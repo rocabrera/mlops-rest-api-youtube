@@ -8,7 +8,7 @@ resource "aws_s3_bucket_acl" "acl" {
 }
 
 resource "aws_s3_object" "object" {
-  key                    = "ml-model"
+  key                    = "model.pickle"
   bucket                 = aws_s3_bucket.bucket.id
   source                 = "/home/rocabrera/Desktop/mlops-rest-api-youtube/app/artifacts/model.pickle"
 }

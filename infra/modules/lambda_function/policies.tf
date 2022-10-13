@@ -21,3 +21,14 @@ data "aws_iam_policy_document" "cloudwatch" {
     sid       = "CreateCloudWatchLogs"
   }
 }
+
+data "aws_iam_policy_document" "s3" {
+  statement {
+    actions = [
+      "s3:GetObject",
+    ]
+    effect    = "Allow"
+    resources = ["${var.bucket_arn}/*"]
+  }
+}
+
