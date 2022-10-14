@@ -1,3 +1,8 @@
+locals {
+  stage_name = "rest_gateway"
+  route_name = "predict"
+}
+
 resource "aws_api_gateway_rest_api" "rest_gateway" {
   body = jsonencode({
     openapi = "3.0.1"
@@ -6,8 +11,8 @@ resource "aws_api_gateway_rest_api" "rest_gateway" {
       version = "1.0"
     }
     paths = {
-      "/predict" = {
-        get = {
+      "/${local.route_name}" = {
+        post = {
           x-amazon-apigateway-integration = {
             httpMethod           = "POST"
             payloadFormatVersion = "1.0"
@@ -19,7 +24,7 @@ resource "aws_api_gateway_rest_api" "rest_gateway" {
     }
   })
 
-  name = "rest_gateway"
+  name = local.stage_name
 
   endpoint_configuration {
     types = ["REGIONAL"]
@@ -41,5 +46,16 @@ resource "aws_api_gateway_deployment" "rest_gateway" {
 resource "aws_api_gateway_stage" "rest_gateway" {
   deployment_id = aws_api_gateway_deployment.rest_gateway.id
   rest_api_id   = aws_api_gateway_rest_api.rest_gateway.id
-  stage_name    = "rest_gateway"
+  stage_name    = local.stage_name
+}
+
+resource aws_api_gateway_method_settings "rest_gateway" {
+  rest_api_id = aws_api_gateway_rest_api.rest_gateway.id
+  stage_name  = aws_api_gateway_stage.rest_gateway.stage_name
+  method_path = "*/*"
+  settings {
+    logging_level = "INFO"
+    throttling_burst_limit = 5
+    throttling_rate_limit  = 10 
+  }
 }

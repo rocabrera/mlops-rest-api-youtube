@@ -1,2 +1,2 @@
-# pandas==1.4.4
-# scikit-learn==1.1.2
+scikit-learn==1.1.2
+aws-lambda-powertools==1.29.2

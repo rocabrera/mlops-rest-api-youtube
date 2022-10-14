@@ -1,0 +1,2 @@
+class DownloadModelError(Exception):
+    pass

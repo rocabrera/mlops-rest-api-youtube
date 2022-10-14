@@ -1,12 +1,13 @@
 resource null_resource ecr_image {
  triggers = {
-   python_code = data.archive_file.src.output_sha
-   docker_file = md5(file("/home/rocabrera/Desktop/mlops-learning/projects/ml_rest_api/app/Dockerfile"))
+   python_code       = data.archive_file.src.output_sha
+   docker_file       = md5(file("${local.root_app_path}/app/Dockerfile"))
+   requirements_file = md5(file("${local.root_app_path}/app/requirements.txt"))
  }
  provisioner "local-exec" {
    command = <<EOF
            aws ecr get-login-password --region ${var.region} | docker login --username AWS --password-stdin ${var.account_id}.dkr.ecr.${var.region}.amazonaws.com
-           cd /home/rocabrera/Desktop/mlops-learning/projects/ml_rest_api/app
+           cd ${local.root_app_path}/app
            docker build -t ${aws_ecr_repository.repo.repository_url}:${var.image_tag} .
            docker push ${aws_ecr_repository.repo.repository_url}:${var.image_tag}
        EOF
