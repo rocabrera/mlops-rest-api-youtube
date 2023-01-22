@@ -30,7 +30,16 @@ data "aws_iam_policy_document" "lambda" {
     ]
     effect    = "Allow"
     resources = ["*"]
-    sid       = "CreateCloudWatchLogs"
+    sid       = "CloudWatchLogs"
+  }
+
+  statement {
+    actions = [
+      "s3:GetObject",
+    ]
+    effect    = "Allow"
+    resources = ["*"]
+    sid       = "S3"
   }
 }
 

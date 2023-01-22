@@ -15,7 +15,10 @@ def download_model(tmp_file: NamedTemporaryFile):
 
     try:
 
-        s3_obj = resource.Object(bucket_name=f"{os.environ['ACCOUNT_ID']}-ml-rest-api")
+        s3_obj = resource.Object(
+            bucket_name=f"{os.environ['ACCOUNT_ID']}-ml-rest-api",
+            key="model.pickle"
+        )
         
         with open(f"/tmp/{tmp_file}", "wb") as f:
             s3_obj.download_fileobj(f)
@@ -31,7 +34,7 @@ def load_model(tmp_file: NamedTemporaryFile) -> RandomForestClassifier:
 
     try:
         
-        with open(f"/tmp/{tmp_file}", "wb") as f:
+        with open(f"/tmp/{tmp_file}", "rb") as f:
             model = pickle.load(f)
 
     except Exception as e:
