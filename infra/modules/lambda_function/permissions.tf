@@ -1,5 +1,10 @@
 resource "aws_iam_role" "lambda" {
   name               = "${var.function_name}-role"
+  inline_policy {
+    name   = "lambda"
+    policy = data.aws_iam_policy_document.lambda.json
+  }
+
   assume_role_policy = <<EOF
     {
     "Version": "2012-10-17",
